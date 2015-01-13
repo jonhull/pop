@@ -23,6 +23,7 @@
 #import <UIKit/UIKit.h>
 #else
 #import <AppKit/NSLayoutConstraint.h>
+#import <AppKit/NSView.h>
 #endif
 
 // common threshold definitions
