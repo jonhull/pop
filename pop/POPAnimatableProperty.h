@@ -132,21 +132,24 @@ extern NSString * const kPOPShapeLayerFillColor;
  */
 extern NSString * const kPOPLayoutConstraintConstant;
 
+/**
+ Common UIView + NSView property names.
+ */
+extern NSString * const kPOPViewAlpha;
+extern NSString * const kPOPViewCenter;
+extern NSString * const kPOPViewFrame;
+extern NSString * const kPOPViewSize;
 
 #if TARGET_OS_IPHONE
 
 /**
  Common UIView property names.
  */
-extern NSString * const kPOPViewAlpha;
 extern NSString * const kPOPViewBackgroundColor;
 extern NSString * const kPOPViewBounds;
-extern NSString * const kPOPViewCenter;
-extern NSString * const kPOPViewFrame;
 extern NSString * const kPOPViewScaleX;
 extern NSString * const kPOPViewScaleXY;
 extern NSString * const kPOPViewScaleY;
-extern NSString * const kPOPViewSize;
 extern NSString * const kPOPViewTintColor;
 
 /**
@@ -219,5 +222,13 @@ extern NSString * const kPOPSCNNodeScaleX;
 extern NSString * const kPOPSCNNodeScaleY;
 extern NSString * const kPOPSCNNodeScaleZ;
 extern NSString * const kPOPSCNNodeScaleXY;
+
+#else //Mac
+
+/**
+ Common NSView property names.
+ */
+extern NSString * const kPOPViewRotation;
+extern NSString * const kPOPViewOrigin;
 
 #endif

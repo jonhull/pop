@@ -77,16 +77,22 @@ NSString * const kPOPShapeLayerLineWidth = @"shapeLayer.lineWidth";
 // NSLayoutConstraint
 NSString * const kPOPLayoutConstraintConstant = @"layoutConstraint.constant";
 
-// UIView
+// UIView + NSView
 NSString * const kPOPViewAlpha = @"view.alpha";
-NSString * const kPOPViewBackgroundColor = @"view.backgroundColor";
-NSString * const kPOPViewBounds = kPOPLayerBounds;
 NSString * const kPOPViewCenter = @"view.center";
 NSString * const kPOPViewFrame = @"view.frame";
+NSString * const kPOPViewSize = @"view.size";
+
+// NSView
+NSString * const kPOPViewRotation = @"view.rotation";
+NSString * const kPOPViewOrigin = @"view.origin";
+
+// UIView
+NSString * const kPOPViewBackgroundColor = @"view.backgroundColor";
+NSString * const kPOPViewBounds = kPOPLayerBounds;
 NSString * const kPOPViewScaleX = @"view.scaleX";
 NSString * const kPOPViewScaleXY = @"view.scaleXY";
 NSString * const kPOPViewScaleY = @"view.scaleY";
-NSString * const kPOPViewSize = kPOPLayerSize;
 NSString * const kPOPViewTintColor = @"view.tintColor";
 
 // UIScrollView
@@ -894,6 +900,22 @@ static POPStaticAnimatablePropertyState _staticStates[] =
     },
     kPOPThresholdScale
   },
+    
+  {kPOPViewSize,
+    ^(UIView *obj, CGFloat values[]) {
+        values_from_size(values, [obj bounds].size);
+    },
+    ^(UIView *obj, const CGFloat values[]) {
+      CGSize size = values_to_size(values);
+      if (size.width < 0. || size.height < 0.)
+        return;
+        
+      CGRect b = [obj bounds];
+      b.size = size;
+      [obj setBounds:b];
+    },
+    kPOPThresholdPoint
+  },
 
   {kPOPViewTintColor,
     ^(UIView *obj, CGFloat values[]) {
@@ -974,6 +996,77 @@ static POPStaticAnimatablePropertyState _staticStates[] =
     kPOPThresholdColor
   },
 
+#else //Mac OS X
+
+  /* NSView */
+
+  {kPOPViewAlpha,
+    ^(NSView *obj, CGFloat values[]) {
+      values[0] = obj.alphaValue;
+    },
+    ^(NSView *obj, const CGFloat values[]) {
+      obj.alphaValue = values[0];
+    },
+    kPOPThresholdOpacity
+  },
+  
+  {kPOPViewCenter,
+    ^(NSView *obj, CGFloat values[]) {
+      CGRect frame = obj.frame;
+      values_from_point(values, CGPointMake(CGRectGetMidX(frame), CGRectGetMidY(frame)));
+    },
+    ^(NSView *obj, const CGFloat values[]) {
+      CGPoint center = values_to_point(values);
+      CGSize size = obj.frame.size;
+      [obj setFrameOrigin:CGPointMake(center.x - size.width/2.0, center.y - size.height/2.0)];
+    },
+    kPOPThresholdPoint
+  },
+    
+  {kPOPViewFrame,
+    ^(NSView *obj, CGFloat values[]) {
+      values_from_rect(values, obj.frame);
+    },
+    ^(NSView *obj, const CGFloat values[]) {
+      obj.frame = values_to_rect(values);
+    },
+    kPOPThresholdPoint
+  },
+    
+  {kPOPViewSize,
+    ^(NSView *obj, CGFloat values[]) {
+      values_from_size(values, [obj bounds].size);
+    },
+    ^(NSView *obj, const CGFloat values[]) {
+      CGSize size = values_to_size(values);
+      if (size.width < 0. || size.height < 0.)
+        return;
+        
+      [obj setFrameSize:size];
+    },
+    kPOPThresholdPoint
+  },
+    
+  {kPOPViewRotation,
+    ^(NSView *obj, CGFloat values[]) {
+      values[0] = obj.frameCenterRotation;
+    },
+    ^(NSView *obj, const CGFloat values[]) {
+      obj.frameCenterRotation = values[0];
+    },
+    kPOPThresholdRotation
+  },
+    
+  {kPOPViewOrigin,
+    ^(NSView *obj, CGFloat values[]) {
+      values_from_point(values, obj.frame.origin);
+    },
+    ^(NSView *obj, const CGFloat values[]) {
+      [obj setFrameOrigin:values_to_point(values)];
+    },
+    kPOPThresholdPoint
+  },
+    
 #endif
 
 };

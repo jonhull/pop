@@ -55,13 +55,13 @@ static void assertPropertyEqual(id self, POPAnimatableProperty *prop1, POPAnimat
                      kPOPShapeLayerStrokeEnd,
                      kPOPShapeLayerStrokeColor,
                      kPOPShapeLayerLineWidth,
-#if TARGET_OS_IPHONE
                      kPOPViewAlpha,
-                     kPOPViewBackgroundColor,
                      kPOPViewCenter,
                      kPOPViewFrame,
-                     kPOPViewBounds,
                      kPOPViewSize,
+#if TARGET_OS_IPHONE
+                     kPOPViewBackgroundColor,
+                     kPOPViewBounds,
                      kPOPViewTintColor,
                      kPOPScrollViewZoomScale,
                      kPOPTableViewContentSize,
@@ -69,6 +69,9 @@ static void assertPropertyEqual(id self, POPAnimatableProperty *prop1, POPAnimat
                      kPOPCollectionViewContentSize,
                      kPOPCollectionViewContentSize,
                      kPOPLabelTextColor
+#else //Mac OS X
+                     kPOPViewRotation,
+                     kPOPViewOrigin
 #endif
                      ];
 
